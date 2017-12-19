@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import { connect } from "react-redux";
+import { updateNames } from "./reducer";
 
 class App extends Component {
   constructor(props) {
@@ -15,6 +17,10 @@ class App extends Component {
     this.setState({ [prop]: val });
   }
   render() {
+    console.log();
+    const names = this.props.names.map((name, i) => {
+      return <div key={i}>{name}</div>;
+    });
     return (
       <div className="App">
         <header className="App-header">
@@ -25,14 +31,17 @@ class App extends Component {
             placeholder="Input name"
             onChange={e => this.handleChange(e.target.value, "input")}
           />
-          <button type="button">Submit</button>
+          <button
+            onClick={e => this.props.updateNames(this.state.input)}
+            type="button"
+          >
+            Submit
+          </button>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {names}
       </div>
     );
   }
 }
 
-export default App;
+export default connect(s => s, { updateNames })(App);
